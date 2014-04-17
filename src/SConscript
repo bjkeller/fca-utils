@@ -1,0 +1,17 @@
+LIBPATH = '/usr/local/Cellar/tclap/1.2.1/include'
+
+context = ['context.cpp']
+Program('composecon',['composecon.cpp']+context)
+Program('mergecon',['mergecon.cpp']+context)
+Program('csv2con',['csv2con.cpp']+context)
+Program('restrictcon',['restrictcon.cpp']+context)
+Program('reverscon',['reversecon.cpp']+context)
+Program('tab2con',['table2context.cpp']+context)
+Program('kludgecon',['kludgecon.cpp']+context)
+
+concept = ['concept.cpp']
+
+lattice = ['lattice.cpp']
+
+Program('countattr',['countattributes.cpp']+concept+lattice);
+Program('depattr',['depchaintable.cpp']+concept+lattice);

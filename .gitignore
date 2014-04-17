@@ -19,3 +19,8 @@
 *.exe
 *.out
 *.app
+
+#scons
+.sconsign.dblite
+site_scons
+build
