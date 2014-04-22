@@ -174,6 +174,36 @@ public:
     std::ostringstream os1;
     writeCon(os1,con1);
     TS_ASSERT_EQUALS(os1.str(),"");
-    
+
+    con2.add("a1","b1");
+    con1.compose(con2,con3);
+    writeCon(os1,con1);
+    TS_ASSERT_EQUALS(os1.str(),"");
+
+    con1.compose(con3,con2);
+    writeCon(os1,con1);
+    TS_ASSERT_EQUALS(os1.str(),"");
+
+    con3.add("b2","c2");
+    con1.compose(con2,con3);
+    writeCon(os1,con1);
+    TS_ASSERT_EQUALS(os1.str(),"");
+
+    con3.add("b1","c1");
+    con1.compose(con2,con3);
+    writeCon(os1,con1);
+    TS_ASSERT_EQUALS(os1.str(),"a1: c1;\n");
+  }
+
+  void testRead(void) {
+    fca::Context con;
+
+    std::string line = "a1: b1;\na2: b1 b2;\n";
+    std::istringstream is(line);
+    readCon(is,con);
+    std::ostringstream os;
+    writeCon(os,con);
+
+    TS_ASSERT_EQUALS(os.str(),line);
   }
 };

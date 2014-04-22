@@ -153,7 +153,9 @@ void Context::compose(const Context& ctxt1, const Context& ctxt2) {
       }
       s_i++;
     }
-    cmap[c_i->first] = attrs;
+    if (!attrs.empty()) {
+      cmap[c_i->first] = attrs;
+    }
     c_i++;
   }
 }
