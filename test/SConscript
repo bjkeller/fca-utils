@@ -1,0 +1,8 @@
+env = Environment(
+  tools = ['default',
+          ('cxxtest', {'CXXTEST_INSTALL_DIR' : '#/extern_libs/cxxtest/',
+                        'CXXTEST_CPPPATH' : '#/src/'})
+])
+
+context = ['contexttest.t.h','#/src/context.cpp']
+env.CxxTest('cons_suite',context)

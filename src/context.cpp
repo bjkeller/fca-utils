@@ -30,6 +30,7 @@ void Context::add(const string& object, const set<string>& attrs) {
     attributes = o_i->second;
   }
   attributes.insert(attrs.begin(),attrs.end());
+  cmap[object] = attributes;
 }
 
 void readConLine(const string& line, Context& ctxt) {
@@ -91,7 +92,9 @@ void Context::merge(const Context& ctxt) {
   }
 }
 
+
 void Context::left_restrict(const set<string>& oset, const Context& ctxt) {
+  cmap.clear();
   set<string>::const_iterator o_i = oset.begin();
   while (o_i != oset.end()) {
     set<string> attrs;
@@ -105,6 +108,7 @@ void Context::left_restrict(const set<string>& oset, const Context& ctxt) {
 }
 
 void Context::right_restrict(const set<string>& oset, const Context& ctxt) {
+  cmap.clear();
   map<string, set<string> >::const_iterator c_i = ctxt.cmap.begin();
   while (c_i != ctxt.cmap.end()) {
     set<string> attrs;
@@ -120,18 +124,14 @@ void Context::right_restrict(const set<string>& oset, const Context& ctxt) {
 }
 
 void Context::transpose(const Context& ctxt) {
+  cmap.clear();
   map<string, set<string> >::const_iterator c_i = ctxt.cmap.begin();
   while (c_i != ctxt.cmap.end()) {
 
     set<string>::const_iterator a_i = c_i->second.begin();
     while (a_i != c_i->second.end()) {
-      set<string> attrs;
-      map<string, set<string> >::iterator r_i = cmap.find(*a_i);
-      if (r_i != cmap.end()) {
-        attrs = r_i->second;
-      }
-      attrs.insert(c_i->first);
-      cmap[*a_i] = attrs;
+
+      add(*a_i,c_i->first);
 
       a_i++;
     }
@@ -141,6 +141,7 @@ void Context::transpose(const Context& ctxt) {
 }
 
 void Context::compose(const Context& ctxt1, const Context& ctxt2) {
+  cmap.clear();
   map<string, set<string> >::const_iterator c_i = ctxt1.cmap.begin();
   while (c_i != ctxt1.cmap.end()) {
     set<string> attrs;

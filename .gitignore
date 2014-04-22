@@ -24,3 +24,8 @@
 .sconsign.dblite
 site_scons
 build
+
+#tests
+extern_libs
+test/cons_suite
+test/*.cpp
