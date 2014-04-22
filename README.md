@@ -31,7 +31,7 @@ The "dep" programs implement the greedy search used in the conference paper
 BJ Keller, F Eichinger, M Kretzler.
 “Formal concept analysis of disease similarity”,
 In the *Proceedings of the 2012 AMIA Summit on Translational Bioinformatics*,
-2012, 42–51.
+2012, 42–51. [Pubmed: [22779049](http://www.ncbi.nlm.nih.gov/pubmed/22779049)]
 
 #Building
 
