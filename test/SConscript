@@ -5,4 +5,7 @@ env = Environment(
 ])
 
 context = ['contexttest.t.h','#/src/context.cpp']
-env.CxxTest('cons_suite',context)
+env.CxxTest('context_suite',context)
+
+concept = ['concepttest.t.h','#/src/concept.cpp']
+env.CxxTest('concept_suite',concept)

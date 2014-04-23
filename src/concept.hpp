@@ -15,8 +15,14 @@
 
 namespace fca {
 
-//concepts
-//
+/*
+ *  concepts
+ *
+ * Implements a pair of sets that can be used to represent formal concepts, however
+ * does not enforce closure property since not linked to formal context other than
+ * in comparison operators.
+ *
+ */
 class concept {
 public:
   concept() : objects(), attributes() {}
@@ -86,9 +92,9 @@ protected:
 class dot_writer : public concept_writer {
  public:
    dot_writer(std::ostream& out) : concept_writer(out) {}
-  /*virtual*/ void writePrefix() { os << "\""; }
-  /*virtual*/ void writeSeparator() { os << ";"; }
-  /*virtual*/ void writeSuffix() { os << "\""; }
+  /*virtual*/ void writePrefix() const { os << "\""; }
+  /*virtual*/ void writeSeparator() const { os << ";"; }
+  /*virtual*/ void writeSuffix() const { os << "\""; }
 };
 
 class attrcount_writer : public dot_writer {
@@ -108,7 +114,7 @@ class entropy_writer : public dot_writer {
 class csv_writer : public concept_writer {
  public:
   csv_writer(std::ostream& out, std::size_t cnt) : concept_writer(out), attrcnt(cnt) {}
-  /*virtual*/ void writeSeparator() { os << ","; }
+  /*virtual*/ void writeSeparator() const { os << ","; }
   /*virtual*/ void writeSet( const std::set<std::string>&) const;
   /*virtual*/ void writeAttributes( const concept&) const;
  private:

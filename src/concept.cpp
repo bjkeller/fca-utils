@@ -81,18 +81,18 @@ void attrcount_writer::writeAttributes(const concept& con) const {
 }
 
 void entropy_writer::writeAttributes(const concept& con) const {
-  os << "H=" << con.entropy(attrcnt);
+  os << "h=" << con.entropy(attrcnt);
 }
 
 void csv_writer::writeSet(const std::set<std::string>& s) const {
   os << "\"";
-  this->writeSet(s);
+  concept_writer::writeSet(s);
   os << "\"";
 }
 
 void csv_writer::writeAttributes(const concept& con) const {
-  this->writeAttributes(con);
-  os << con.getAttributes().size() << ",";
+  concept_writer::writeAttributes(con);
+  os << "," << con.getAttributes().size() << ",";
   os << con.entropy(attrcnt);
 }
 
