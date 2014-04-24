@@ -27,7 +27,5 @@ build
 
 #tests
 extern_libs
-test/cons_suite
-test/context_suite
-test/concept_suite
+test/*_suite
 test/*.cpp

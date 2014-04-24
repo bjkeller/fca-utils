@@ -9,3 +9,6 @@ env.CxxTest('context_suite',context)
 
 concept = ['concepttest.t.h','#/src/concept.cpp']
 env.CxxTest('concept_suite',concept)
+
+lattice = ['latticetest.t.h','#/src/concept.cpp','#/src/lattice.cpp']
+env.CxxTest('lattice_suite',lattice)

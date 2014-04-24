@@ -51,19 +51,6 @@ private:
   std::set<std::string> attributes;
 };
 
-/*
-class concept_writer {
-public:
-  void write(ostream& os, const concept& con) const;
-  virtual void writeObjects(ostream& os, const concept& con) const;
-  virtual void writeAttributes(ostream& os, const concept& con) const;
-};
-
-void writeConcept(ostream& os, const concept& con);
-void writeConceptDiff(ostream& os, const concept& con, const set<string>& diffset);
-void writeConceptAttrCount(ostream& os, const concept& con);
-*/
-
 class concept_visitor {
  public:
   virtual void visit(const concept&) = 0;

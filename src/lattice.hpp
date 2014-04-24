@@ -17,29 +17,33 @@ public:
 
 class lattice {
 public:
+
+  lattice() : lmap() {}
+  lattice(const lattice& l) : lmap(l.lmap) {}
+
   void add(const concept& c1, const concept& c2);
   void accept(arc_visitor*) const;
   void accept(const concept&, arc_visitor*) const;
-  typedef std::map<concept, std::set<concept> > lattice_map;
-private:
 
+  typedef std::map<concept, std::set<concept> > lattice_map;
+
+private:
   lattice_map lmap;
 };
 
+//only works if context is reduced --- no attributes associated with all objects
 inline bool isTop(const concept& c) {
     return c.getAttributes().empty(); // || c.getObjects().size() = ALLOBJECTS ??
 }
 
+//only works if context is reduced --- no attributes associated with all objects
 inline bool isBot(const concept& c) {
     return c.getObjects().empty(); // || c.getAttributes().size() == ALLATTRIBUTES
 }
 
-
-
-
-class uplattice_visitor : public arc_visitor {
+class uparc_visitor : public arc_visitor {
 public:
-  uplattice_visitor(lattice& l): ltce(l) {};
+  uparc_visitor(lattice& l): ltce(l) {};
   /* virtual */ void visitArc(const concept& super, const concept& sub) {
     ltce.add(sub,super); //up mapping
   }
@@ -47,9 +51,9 @@ private:
   lattice& ltce;
 };
 
-class downlattice_visitor : public arc_visitor {
+class downarc_visitor : public arc_visitor {
 public:
-  downlattice_visitor(lattice& l): ltce(l) {};
+  downarc_visitor(lattice& l): ltce(l) {};
   /* virtual */ void visitArc(const concept& super, const concept& sub) {
     ltce.add(super,sub); //down mapping
   }
@@ -65,8 +69,7 @@ private:
   concept_writer* wrt;
 };
 
-void parseDotArc(const std::string&, arc_visitor*);
 void readDotLattice(std::istream&, arc_visitor*);
-void writeLattice(const lattice&, const concept_writer*);
+void writeLattice(const lattice&, concept_writer*);
 };
 #endif

@@ -40,14 +40,12 @@ namespace fca {
     }
   }
 
-
   void arc_writer::visitArc(const concept& super, const concept& sub) {
     wrt->write(super);
     (wrt->getStream()) << "->";
     wrt->write(sub);
     (wrt->getStream()) << endl;
   }
-
 
   set<string> parseList(const string& line) {
     string tok;
@@ -79,28 +77,6 @@ namespace fca {
     return concept();
   }
 
-  // need for some polymorphism here!!!
-
-  /*
-  //may need to change for down up parsing
-  //
-  size_t parseArc(lattice_map& downMap, const string& line) {
-  int apos = line.find("->");
-  if (apos != string::npos) {
-  concept super = parseConcept(line.substr(0,apos));
-  concept sub = parseConcept(line.substr(apos+2)); // handle arc attributes here
-
-  add(downMap,super,sub);
-  return sub.getAttributes().size();
-}
-return 0;
-}
-*/
-
-
-
-
-
 void parseDotArc(const std::string& line, arc_visitor* v) {
   int apos = line.find("->");
   if (apos != string::npos) {
@@ -121,7 +97,7 @@ void readDotLattice(istream& is, arc_visitor* v) {
 }
 
 void writeLattice(const lattice& l,  concept_writer* wrt) {
-  cout << "digraph lattice { " << endl;
+  (wrt->getStream()) << "digraph lattice {" << endl;
 
   arc_writer* v = new arc_writer(wrt);
 
@@ -129,7 +105,7 @@ void writeLattice(const lattice& l,  concept_writer* wrt) {
 
   delete v;
 
-  cout << "}" << endl;
+  (wrt->getStream()) << "}" << endl;
 }
 
 }; //namespace fca

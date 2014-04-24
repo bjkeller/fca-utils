@@ -298,57 +298,57 @@ public:
 
   }
 
-void testCSVWriter(void) {
-  std::set<std::string> objs0, objs1, objs2, objs3, objs4;
-  std::set<std::string> attrs0, attrs1, attrs2, attrs3, attrs4;
+  void testCSVWriter(void) {
+    std::set<std::string> objs0, objs1, objs2, objs3, objs4;
+    std::set<std::string> attrs0, attrs1, attrs2, attrs3, attrs4;
 
-  //want con0 < con1 < con2 < con3
-  attrs0.insert("a1");
-  objs1.insert("o1"); attrs1.insert("a1");
-  objs2.insert("o1"); attrs2.insert("a1");
-  objs4.insert("o1");
-  attrs0.insert("a2");
-  objs2.insert("o2"); attrs2.insert("a2");
-  objs4.insert("o2");
-  attrs0.insert("a3");
-  objs3.insert("o3"); attrs3.insert("a3");
-  objs4.insert("o3");
-  fca::concept con0(objs0,attrs0);
-  fca::concept con1(objs1,attrs1);
-  fca::concept con12(con1);
-  fca::concept con2(objs2,attrs2);
-  fca::concept con3(objs3,attrs3);
-  fca::concept con4(objs4,attrs4);
+    //want con0 < con1 < con2 < con3
+    attrs0.insert("a1");
+    objs1.insert("o1"); attrs1.insert("a1");
+    objs2.insert("o1"); attrs2.insert("a1");
+    objs4.insert("o1");
+    attrs0.insert("a2");
+    objs2.insert("o2"); attrs2.insert("a2");
+    objs4.insert("o2");
+    attrs0.insert("a3");
+    objs3.insert("o3"); attrs3.insert("a3");
+    objs4.insert("o3");
+    fca::concept con0(objs0,attrs0);
+    fca::concept con1(objs1,attrs1);
+    fca::concept con12(con1);
+    fca::concept con2(objs2,attrs2);
+    fca::concept con3(objs3,attrs3);
+    fca::concept con4(objs4,attrs4);
 
-  std::ostringstream os0;
-  fca::csv_writer* dw0 = new fca::csv_writer(os0,3);
-  con0.write(dw0);
-  TS_ASSERT_EQUALS(os0.str(),"\"\",\"a1, a2, a3\",3,0");
-  delete dw0;
+    std::ostringstream os0;
+    fca::csv_writer* dw0 = new fca::csv_writer(os0,3);
+    con0.write(dw0);
+    TS_ASSERT_EQUALS(os0.str(),"\"\",\"a1, a2, a3\",3,0");
+    delete dw0;
 
-  std::ostringstream os1;
-  fca::csv_writer* dw1 = new fca::csv_writer(os1,3);
-  con1.write(dw1);
-  TS_ASSERT_EQUALS(os1.str(),"\"o1\",\"a1\",1,0.528321");
-  delete dw1;
+    std::ostringstream os1;
+    fca::csv_writer* dw1 = new fca::csv_writer(os1,3);
+    con1.write(dw1);
+    TS_ASSERT_EQUALS(os1.str(),"\"o1\",\"a1\",1,0.528321");
+    delete dw1;
 
-  std::ostringstream os2;
-  fca::csv_writer* dw2 = new fca::csv_writer(os2,3);
-  con2.write(dw2);
-  TS_ASSERT_EQUALS(os2.str(),"\"o1, o2\",\"a1, a2\",2,0.389975");
-  delete dw2;
+    std::ostringstream os2;
+    fca::csv_writer* dw2 = new fca::csv_writer(os2,3);
+    con2.write(dw2);
+    TS_ASSERT_EQUALS(os2.str(),"\"o1, o2\",\"a1, a2\",2,0.389975");
+    delete dw2;
 
-  std::ostringstream os3;
-  fca::csv_writer* dw3 = new fca::csv_writer(os3,3);
-  con3.write(dw3);
-  TS_ASSERT_EQUALS(os3.str(),"\"o3\",\"a3\",1,0.528321");
-  delete dw3;
+    std::ostringstream os3;
+    fca::csv_writer* dw3 = new fca::csv_writer(os3,3);
+    con3.write(dw3);
+    TS_ASSERT_EQUALS(os3.str(),"\"o3\",\"a3\",1,0.528321");
+    delete dw3;
 
-  std::ostringstream os4;
-  fca::csv_writer* dw4 = new fca::csv_writer(os4,3);
-  con4.write(dw4);
-  TS_ASSERT_EQUALS(os4.str(),"\"o1, o2, o3\",\"\",0,0");
-  delete dw4;
+    std::ostringstream os4;
+    fca::csv_writer* dw4 = new fca::csv_writer(os4,3);
+    con4.write(dw4);
+    TS_ASSERT_EQUALS(os4.str(),"\"o1, o2, o3\",\"\",0,0");
+    delete dw4;
 
-}
+  }
 };

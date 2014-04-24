@@ -10,6 +10,7 @@ Program('restrictcon',['restrictcon.cpp']+context)
 Program('reverscon',['reversecon.cpp']+context)
 Program('tab2con',['table2context.cpp']+context)
 Program('kludgecon',['kludgecon.cpp']+context)
+Program('cat2con',['category2con.cpp']+context)
 
 concept = ['concept.cpp']
 

@@ -16,10 +16,10 @@
 #include "concept.hpp"
 #include "lattice.hpp"
 
-class depchain_visitor : public fca::downlattice_visitor {
+class depchain_visitor : public fca::downarc_visitor {
 public:
   depchain_visitor(fca::lattice& l,std::priority_queue<fca::concept>& ca,std::map<fca::concept,std::string>& ch):
-  downlattice_visitor(l), coatoms(ca), chains(ch) {}
+  downarc_visitor(l), coatoms(ca), chains(ch) {}
   /* virtual */ void visitArc(const fca::concept&, const fca::concept&);
 private:
   std::priority_queue<fca::concept>& coatoms;
@@ -54,7 +54,7 @@ void depchain_visitor::visitArc(const fca::concept& super, const fca::concept& s
     coatoms.push(sub);
     chains[sub] = conceptString(sub);
   } else {
-    downlattice_visitor::visitArc(super,sub);
+    downarc_visitor::visitArc(super,sub);
   }
 }
 
