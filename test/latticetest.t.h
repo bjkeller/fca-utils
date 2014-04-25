@@ -3,6 +3,8 @@
 #include "concept.hpp"
 #include "lattice.hpp"
 
+//Note: doesn't touch uparc_visitor
+
 class LatticeTests: public CxxTest::TestSuite {
 public:
   void testEmptyWrite(void) {
@@ -82,4 +84,5 @@ public:
     std::string expected = "\"o1, o2, o3;\"->\"o3;a3\"\n\"o1, o2, o3;\"->\"o1, o2;a1\"\n";
     TS_ASSERT_EQUALS(dos.str(),expected);
   }
+
 };
