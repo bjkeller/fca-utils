@@ -1,6 +1,6 @@
 
 
-LIBPATH = '/usr/local/Cellar/tclap/1.2.1/include'
+LIBPATH = ['/usr/local/Cellar/tclap/1.2.1/include','/usr/local/Cellar/boost/1.55.0_1/include']
 
 context = ['context.cpp']
 Program('composecon',['composecon.cpp']+context)
@@ -14,7 +14,12 @@ Program('cat2con',['category2con.cpp']+context)
 
 concept = ['concept.cpp']
 
+chain = ['chain.cpp']
+chainmap = ['chain_map.cpp']
+
+
+
 lattice = ['lattice.cpp']
 
 Program('countattr',['countattributes.cpp']+concept+lattice);
-Program('depattr',['depchaintable.cpp']+concept+lattice);
+Program('depattr',['depchain.cpp','depchaintable.cpp']+concept+chain+chainmap+lattice);

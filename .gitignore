@@ -29,3 +29,6 @@ build
 extern_libs
 test/*_suite
 test/*.cpp
+
+#macness
+**/.DS_Store

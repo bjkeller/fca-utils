@@ -13,7 +13,18 @@
 #include <string>
 #include <set>
 
+#include <boost/shared_ptr.hpp>
+
 namespace fca {
+
+class concept_visitor;
+typedef boost::shared_ptr<concept_visitor> concept_visitor_ptr;
+
+class concept_predicate;
+typedef boost::shared_ptr<concept_predicate> concept_pred_ptr;
+
+class concept_writer;
+typedef boost::shared_ptr<concept_writer> concept_writer_ptr;
 
 /*
  *  concepts
@@ -42,9 +53,9 @@ public:
 
   double entropy(std::size_t count) const;
 
-  void accept(class concept_visitor* v) const;
-  bool accept(class concept_predicate* v) const;
-  void write(class concept_writer* v) const;
+  void accept(concept_visitor_ptr) const;
+  bool accept(concept_pred_ptr) const;
+  void write(concept_writer_ptr) const;
 
 private:
   std::set<std::string> objects;

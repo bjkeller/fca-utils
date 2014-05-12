@@ -46,9 +46,9 @@ double concept::entropy(size_t attrtot) const {
     return entropy;
 }
 
-void concept::accept(class concept_visitor* v) const { v->visit(*this); }
-bool concept::accept(class concept_predicate* v) const { return v->pred(*this); }
-void concept::write(class concept_writer* v) const { v->write(*this); }
+void concept::accept(concept_visitor_ptr v) const { v->visit(*this); }
+bool concept::accept(concept_pred_ptr v) const { return v->pred(*this); }
+void concept::write(concept_writer_ptr v) const { v->write(*this); }
 
 void concept_writer::write(const concept& con) const {
   this->writePrefix();

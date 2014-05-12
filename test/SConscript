@@ -10,5 +10,11 @@ env.CxxTest('context_suite',context)
 concept = ['concepttest.t.h','#/src/concept.cpp']
 env.CxxTest('concept_suite',concept)
 
+chain = ['chaintest.t.h','#/src/concept.cpp','#/src/chain.cpp']
+env.CxxTest('chain_suite',chain)
+
+chainmap = ['chainmaptest.t.h','#/src/concept.cpp','#/src/chain.cpp','#/src/chain_map.cpp']
+env.CxxTest('chainmap_suite',chainmap)
+
 lattice = ['latticetest.t.h','#/src/concept.cpp','#/src/lattice.cpp']
 env.CxxTest('lattice_suite',lattice)

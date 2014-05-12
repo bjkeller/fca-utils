@@ -13,7 +13,7 @@ using namespace std;
 
 string makeAttr(const string& attrname, size_t i, const string& val) {
   ostringstream oss;
-  oss << attrname << i << val;
+  oss << attrname << i << "_" << val;
   return oss.str();
 }
 
