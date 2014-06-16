@@ -76,3 +76,9 @@ If you give dot input with annotations, at best, the annotations will be ignored
 - Because these programs require colibri-java to generate the full lattice output,
 what may be practical to compute is limited by the ability of that program to
 write the dot file.
+- Some of these programs are just flat out brain dead from an efficiency
+standpoint: we have to have colibri-java construct the full lattice, and then we
+read the full lattice, storing a filtered version in memory, and then deciding
+what is output. Java code built on colibri-java classes are in the project DepChain
+and do the computation as the lattice is constructed, avoiding building the full
+thing.
