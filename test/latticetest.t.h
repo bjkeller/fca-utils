@@ -10,9 +10,8 @@ public:
   void testEmptyWrite(void) {
     fca::lattice lat;
     std::ostringstream dos;
-    fca::dot_writer* w = new fca::dot_writer(dos);
+    fca::concept_writer_ptr w(new fca::dot_writer(dos));
     fca::writeLattice(lat,w);
-    delete w;
 
     TS_ASSERT_EQUALS(dos.str(),"digraph lattice {\n}\n");
   }
@@ -30,14 +29,12 @@ public:
     std::istringstream iss(input);
 
     fca::lattice lat;
-    fca::downarc_visitor* v = new fca::downarc_visitor(lat);
+    fca::arc_visitor_ptr v(new fca::downarc_visitor(lat));
     fca::readDotLattice(iss,v);
-    delete v;
 
     std::ostringstream dos;
-    fca::dot_writer* w = new fca::dot_writer(dos);
+    fca::concept_writer_ptr w(new fca::dot_writer(dos));
     fca::writeLattice(lat,w);
-    delete w;
 
     std::ostringstream exp;
     exp << "digraph lattice {\n";
@@ -64,9 +61,8 @@ public:
     std::istringstream iss(input);
 
     fca::lattice lat;
-    fca::downarc_visitor* v = new fca::downarc_visitor(lat);
+    fca::arc_visitor_ptr v(new fca::downarc_visitor(lat));
     fca::readDotLattice(iss,v);
-    delete v;
 
     std::set<std::string> objs1, attrs1;
     objs1.insert("o1");
@@ -75,11 +71,9 @@ public:
     fca::concept con(objs1,attrs1);
 
     std::ostringstream dos;
-    fca::dot_writer* dw = new fca::dot_writer(dos);
-    fca::arc_writer* aw = new fca::arc_writer(dw);
+    fca::concept_writer_ptr dw(new fca::dot_writer(dos));
+    fca::arc_writer_ptr aw(new fca::arc_writer(dw));
     lat.accept(con,aw);
-    delete aw;
-    delete dw;
 
     std::string expected = "\"o1, o2, o3;\"->\"o3;a3\"\n\"o1, o2, o3;\"->\"o1, o2;a1\"\n";
     TS_ASSERT_EQUALS(dos.str(),expected);

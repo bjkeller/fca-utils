@@ -15,7 +15,7 @@ public:
     TS_ASSERT_EQUALS(con1.getAttributes().size(),0);
     TS_ASSERT_EQUALS(con1.getObjects().size(),0);
     TS_ASSERT(!(con1 < con2));
-    TS_ASSERT_EQUALS(con1.entropy(100),0);
+    TS_ASSERT_EQUALS(con1.attrEntropy(100),0);
   }
 
   void testComparison(void) {
