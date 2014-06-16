@@ -17,7 +17,7 @@ namespace fca {
     }
   }
 
-  void lattice::accept(arc_visitor* v) const {
+  void lattice::accept(arc_visitor_ptr v) const {
     lattice_map::const_reverse_iterator c_i = lmap.rbegin();
     while (c_i != lmap.rend()) {
       set<concept>::const_iterator s_i = c_i->second.begin();
@@ -29,7 +29,7 @@ namespace fca {
     }
   }
 
-  void lattice::accept(const concept& c, arc_visitor* v) const {
+  void lattice::accept(const concept& c, arc_visitor_ptr v) const {
     lattice_map::const_iterator c_i = lmap.find(c);
     if (c_i != lmap.end()) {
       set<concept>::const_iterator s_i = c_i->second.begin();
@@ -77,7 +77,7 @@ namespace fca {
     return concept();
   }
 
-void parseDotArc(const std::string& line, arc_visitor* v) {
+void parseDotArc(const std::string& line, arc_visitor_ptr v) {
   int apos = line.find("->");
   if (apos != string::npos) {
     concept super = parseDotConcept(line.substr(0,apos));
@@ -87,7 +87,7 @@ void parseDotArc(const std::string& line, arc_visitor* v) {
   }
 }
 
-void readDotLattice(istream& is, arc_visitor* v) {
+void readDotLattice(istream& is, arc_visitor_ptr v) {
   string line;
   getline(is,line);
   while (is) {
@@ -96,14 +96,12 @@ void readDotLattice(istream& is, arc_visitor* v) {
   }
 }
 
-void writeLattice(const lattice& l,  concept_writer* wrt) {
+void writeLattice(const lattice& l,  concept_writer_ptr wrt) {
   (wrt->getStream()) << "digraph lattice {" << endl;
 
-  arc_writer* v = new arc_writer(wrt);
+  arc_writer_ptr v(new arc_writer(wrt));
 
   l.accept(v);
-
-  delete v;
 
   (wrt->getStream()) << "}" << endl;
 }

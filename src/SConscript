@@ -21,5 +21,8 @@ chainmap = ['chain_map.cpp']
 
 lattice = ['lattice.cpp']
 
-Program('countattr',['countattributes.cpp']+concept+lattice);
-Program('depattr',['depchain.cpp','depchaintable.cpp']+concept+chain+chainmap+lattice);
+Program('countattr',['countattributes.cpp']+concept+lattice)
+Program('depattr',['depchain.cpp','depchaintable.cpp']+concept+chain+chainmap+lattice)
+
+
+Program('buildfreqtab',['buildfreqtable.cpp']+concept+lattice)

@@ -15,8 +15,8 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 
-  fca::concept_writer* w = new fca::attrcount_writer(cout);
-  fca::arc_writer* v = new fca::arc_writer(w);
+  fca::concept_writer_ptr w(new fca::attrcount_writer(cout));
+  fca::arc_writer_ptr v(new fca::arc_writer(w));
 
   cout << "digraph lattice { " << endl;
 
@@ -24,6 +24,4 @@ int main(int argc, char* argv[]) {
 
   cout << "}" << endl;
 
-  delete v;
-  delete w;
 }

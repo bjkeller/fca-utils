@@ -20,12 +20,12 @@ private:
 
 class maxsub_visitor : public fca::arc_visitor {
 public:
-  maxsub_visitor() : maxsz(0), max() {}
+  maxsub_visitor(std::set<fca::concept>& mx) : maxsz(0), max(mx) {}
   void visitArc(const fca::concept&, const fca::concept&);
   const std::set<fca::concept>& maxSet() const { return max; }
 private:
   std::size_t maxsz;
-  std::set<fca::concept> max;
+  std::set<fca::concept>& max;
 };
 
 void findAltChains(std::ostream&, std::priority_queue<fca::concept>&,

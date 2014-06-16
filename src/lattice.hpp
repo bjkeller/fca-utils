@@ -6,6 +6,8 @@
 #include <string>
 #include <queue>
 
+#include <boost/shared_ptr.hpp>
+
 #include "concept.hpp"
 
 namespace fca {
@@ -15,6 +17,8 @@ public:
   virtual void visitArc(const concept&, const concept&) = 0;
 };
 
+typedef boost::shared_ptr<arc_visitor> arc_visitor_ptr;
+
 class lattice {
 public:
 
@@ -22,8 +26,8 @@ public:
   lattice(const lattice& l) : lmap(l.lmap) {}
 
   void add(const concept& c1, const concept& c2);
-  void accept(arc_visitor*) const;
-  void accept(const concept&, arc_visitor*) const;
+  void accept(arc_visitor_ptr) const;
+  void accept(const concept&, arc_visitor_ptr) const;
 
   typedef std::map<concept, std::set<concept> > lattice_map;
 
@@ -63,13 +67,15 @@ private:
 
 class arc_writer : public arc_visitor {
 public:
-  arc_writer(concept_writer* writer) : wrt(writer) {}
+  arc_writer(concept_writer_ptr writer) : wrt(writer) {}
   /* virtual */ void visitArc(const concept&, const concept&);
 private:
-  concept_writer* wrt;
+  concept_writer_ptr wrt;
 };
 
-void readDotLattice(std::istream&, arc_visitor*);
-void writeLattice(const lattice&, concept_writer*);
+typedef boost::shared_ptr<arc_writer> arc_writer_ptr;
+
+void readDotLattice(std::istream&, arc_visitor_ptr);
+void writeLattice(const lattice&, concept_writer_ptr);
 };
 #endif

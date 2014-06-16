@@ -42,7 +42,7 @@ public:
 
   concept& operator= (const concept& con);
 
-  bool operator== (const concept& con) {
+  bool operator== (const concept& con) const {
     return objects == con.objects;
   }
 
@@ -51,7 +51,8 @@ public:
   const std::set<std::string>& getObjects() const { return objects; }
   const std::set<std::string>& getAttributes() const { return attributes; }
 
-  double entropy(std::size_t count) const;
+  double attrEntropy(std::size_t count) const;
+  double objEntropy(std::size_t count) const;
 
   void accept(concept_visitor_ptr) const;
   bool accept(concept_pred_ptr) const;

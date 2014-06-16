@@ -25,9 +25,8 @@ int main(int argc, char* argv[]) {
   std::priority_queue<fca::concept> coatoms;
   fca::chain_map chains;
 
-  fca::depchain_visitor* v = new fca::depchain_visitor(l,coatoms,chains);
+  fca::arc_visitor_ptr v(new fca::depchain_visitor(l,coatoms,chains));
   fca::readDotLattice(std::cin,v);
-  delete v;
 
   fca::findAltChains(std::cout,coatoms,chains,l);
 

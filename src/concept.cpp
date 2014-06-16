@@ -36,10 +36,20 @@ bool concept::operator< (const concept& con) const {
 }
 
 
-double concept::entropy(size_t attrtot) const {
+double concept::attrEntropy(size_t attrtot) const {
     double entropy = 0.0;
     if (!attributes.empty() && attributes.size() != attrtot) {
       double p_con = attributes.size() / static_cast<double>(attrtot);
+      double log_p_con = std::log2(p_con);
+      entropy = -1*(p_con*log_p_con);
+    }
+    return entropy;
+}
+
+double concept::objEntropy(size_t objtot) const {
+    double entropy = 0.0;
+    if (!objects.empty() && objects.size() != objtot) {
+      double p_con = objects.size() / static_cast<double>(objtot);
       double log_p_con = std::log2(p_con);
       entropy = -1*(p_con*log_p_con);
     }
@@ -81,7 +91,7 @@ void attrcount_writer::writeAttributes(const concept& con) const {
 }
 
 void entropy_writer::writeAttributes(const concept& con) const {
-  os << "h=" << con.entropy(attrcnt);
+  os << "h=" << con.attrEntropy(attrcnt);
 }
 
 void csv_writer::writeSet(const std::set<std::string>& s) const {
@@ -93,7 +103,7 @@ void csv_writer::writeSet(const std::set<std::string>& s) const {
 void csv_writer::writeAttributes(const concept& con) const {
   concept_writer::writeAttributes(con);
   os << "," << con.getAttributes().size() << ",";
-  os << con.entropy(attrcnt);
+  os << con.attrEntropy(attrcnt);
 }
 
 /*

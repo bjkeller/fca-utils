@@ -25,8 +25,8 @@ void readTableLine(const string& line,
     size_t col = 0;
     string tok;
     while(ls >> tok) {
-      col++;
       string attr = makeAttr(attrname,col,tok);
+      col++;
       ctxt.add(obj,attr);
     }
   }
@@ -44,7 +44,7 @@ void readTable(istream& is, fca::Context& cmap) {
   if (is) {
     size_t row = 0;
     string line;
-    getline(is,line); row++;
+    getline(is,line);
     while(is) {
       readTableLine(line,makeObj(objname,row),attrname,cmap);
       getline(is,line); row++;

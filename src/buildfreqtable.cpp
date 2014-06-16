@@ -1,0 +1,189 @@
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <utility>
+#include <set>
+#include <map>
+#include <queue>
+
+#include "concept.hpp"
+#include "lattice.hpp"
+
+
+std::string separateVariable(const std::string& attr) {
+  std::istringstream iss(attr);
+  std::string variable;
+  std::getline(iss,variable,'_');
+  return variable;
+}
+
+class VariableSet {
+public:
+  VariableSet() : vset() {}
+  VariableSet(const std::set<std::string>& varset) : vset(varset) {}
+  VariableSet(const VariableSet& vs) : vset(vs.vset) {}
+
+  bool operator== (const VariableSet& vs) const { return vset == vs.vset; }
+  bool operator< (const VariableSet& vs) const {
+      if (vset.size() == vs.vset.size()) {
+        std::set<std::string>::const_iterator v_i = vset.begin();
+        std::set<std::string>::const_iterator vs_i = vs.vset.begin();
+        while (v_i != vset.end() && vs_i != vs.vset.end() && (*v_i) == (*vs_i)) {
+          v_i++;
+          vs_i++;
+        }
+        return v_i != vset.end() && vs_i != vs.vset.end() && (*v_i) < (*vs_i);
+      }
+      return vset.size() < vs.vset.size();
+  }
+
+  std::set<std::string> getVariableSet() const { return vset; }
+
+  void project(const fca::concept&);
+private:
+  std::set<std::string> vset;
+};
+
+void VariableSet::project(const fca::concept& con) {
+  std::set<std::string> attributes = con.getAttributes();
+
+  std::set<std::string>::const_iterator a_i = attributes.begin();
+  while (a_i != attributes.end()) {
+    vset.insert(separateVariable(*a_i));
+    a_i++;
+  }
+}
+
+typedef std::map<VariableSet, std::set<fca::concept> > info_map;
+typedef std::map<fca::concept,fca::concept> max_map;
+typedef std::priority_queue<fca::concept> con_queue;
+
+class info_visitor : public fca::arc_visitor {
+public:
+  info_visitor(info_map& im, max_map& mm, con_queue& q, std::set<std::string>& objset): imap(im), mmap(mm), coatoms(q), objs(objset), visited() {}
+  void visitArc(const fca::concept& super,const fca::concept& sub) {
+    if (fca::isTop(super)) {
+      coatoms.push(sub);
+    } else {
+      addMax(super,sub);
+    }
+    if (visited.find(super) == visited.end()) {
+      addInfo(super);
+    }
+    if (visited.find(sub) == visited.end()) {
+      addInfo(sub);
+    }
+  }
+private:
+  void addMax(const fca::concept& super, const fca::concept& sub) {
+    size_t ssz = sub.getObjects().size();
+    max_map::iterator m_i = mmap.find(super);
+    if (m_i != mmap.end()) {
+      if (ssz > m_i->second.getObjects().size()) {
+        mmap[super] = sub;
+      }
+    } else {
+      mmap[super] = sub;
+    }
+  }
+  void addInfo(const fca::concept& con) {
+    VariableSet vs;
+    vs.project(con);
+    std::set<fca::concept> pset;
+    info_map::iterator v_i = imap.find(vs);
+    if (v_i != imap.end()) {
+      v_i->second.insert(con);
+    } else {
+      pset.insert(con);
+      imap[vs] = pset;
+    }
+    objs.insert(con.getObjects().begin(),con.getObjects().end());
+    visited.insert(con);
+  }
+  std::set<fca::concept> visited;
+  std::set<std::string>& objs;
+  info_map& imap;
+  max_map& mmap;
+  con_queue& coatoms;
+};
+
+//yes, I'm not using a concept writer
+void writeSet(std::ostream& os, const std::set<std::string>& s) {
+    std::set<std::string>::const_iterator s_i = s.begin();
+    while (s_i != s.end()) {
+        os << *s_i++;
+        if (s_i != s.end()) {
+            os << "-";
+        }
+    }
+}
+
+void writeRow(std::ostream& os, const fca::concept& con, const VariableSet& vs, const info_map& imap, size_t numObjs) {
+
+  info_map::const_iterator v_i = imap.find(vs);
+  if (v_i != imap.end()) {
+    std::set<std::string> s = vs.getVariableSet();
+    os << s.size() << "\t";
+    writeSet(os,s);
+    os << "\t";
+    int n = 0;
+    double min=1.0;
+    double max=0;
+    double sum=0;
+    std::set<fca::concept>::const_iterator c_i = v_i->second.begin();
+    while (c_i != v_i->second.end()) {
+      n++;
+      double ent = (*c_i).objEntropy(numObjs);
+      sum += ent;
+      max = ent > max ? ent : max;
+      min = ent < min ? ent : min;
+      c_i++;
+    }
+    os << (sum/n) << "\t" << min << "\t" << max << std::endl;
+    v_i++;
+  } 
+}
+
+void writeTable(std::ostream& os, con_queue& toVisit, const max_map& mmap, const info_map& imap, size_t numObjs) {
+  std::set<fca::concept> visited;
+  std::set<VariableSet> visitedVS;
+
+  while (!toVisit.empty()) {
+    fca::concept next = toVisit.top();
+    toVisit.pop();
+
+    if (visited.find(next) == visited.end() && !fca::isBot(next)) { //not visited and not bottom
+      visited.insert(next); //mark visited
+
+      VariableSet vs;
+      vs.project(next);
+      if (visitedVS.find(vs) == visitedVS.end()) {
+        writeRow(os,next,vs,imap,numObjs);
+        visitedVS.insert(vs);
+      }
+
+      max_map::const_iterator m_i = mmap.find(next);
+      if (m_i != mmap.end()) {
+        toVisit.push(m_i->second);
+      }
+
+    }
+  }
+}
+
+/*
+ * reads dot input using a visitor that constructs dependency structure and captures
+ * variable set to concept mapping. Table is generated by traversing the dependency
+ * structure and dumping data for instantiations of correponding variable sets.
+ */
+int main( int argc, char* argv[]) {
+  std::set<std::string> objs; //kludgy to get counts
+  info_map imap;
+  max_map mmap;
+  con_queue coatoms;
+  fca::arc_visitor_ptr v(new info_visitor(imap,mmap,coatoms,objs));
+
+  fca::readDotLattice(std::cin,v);
+
+  writeTable(std::cout, coatoms, mmap, imap,objs.size());
+}

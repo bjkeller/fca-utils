@@ -61,10 +61,10 @@ void findAltChains(std::ostream& os, std::priority_queue<fca::concept>& tovisit,
     if (visited.find(next) == visited.end() && !isBot(next)) { //not visited and not bottom
       visited.insert(next); //mark visited
 
-      maxsub_visitor* mv = new maxsub_visitor();
+      std::set<fca::concept> max;
+      arc_visitor_ptr mv(new maxsub_visitor(max));
       downMap.accept(next,mv);
 
-      std::set<fca::concept> max = mv->maxSet();
       if (max.size() > 0) {
         chains.push(next,max);
         std::set<fca::concept>::const_iterator s_i = max.begin();
@@ -74,7 +74,6 @@ void findAltChains(std::ostream& os, std::priority_queue<fca::concept>& tovisit,
         }
       }
 
-      delete mv;
     }
   }
 }
