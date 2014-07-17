@@ -102,6 +102,12 @@ public:
   /* virtual */ void writeAttributes(const concept&) const;
 };
 
+class objcount_writer : public dot_writer {
+public:
+  objcount_writer(std::ostream& out) : dot_writer(out) {}
+  /* virtual */ void writeObjects(const concept&) const;
+};
+
 class entropy_writer : public dot_writer {
  public:
   entropy_writer(std::ostream& out,std::size_t cnt) : dot_writer(out), attrcnt(cnt) {}

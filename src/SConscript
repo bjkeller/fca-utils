@@ -22,6 +22,7 @@ chainmap = ['chain_map.cpp']
 lattice = ['lattice.cpp']
 
 Program('countattr',['countattributes.cpp']+concept+lattice)
+Program('countobj',['countobjects.cpp']+concept+lattice)
 Program('depattr',['depchain.cpp','depchaintable.cpp']+concept+chain+chainmap+lattice)
 
 

@@ -90,6 +90,10 @@ void attrcount_writer::writeAttributes(const concept& con) const {
   os << con.getAttributes().size();
 }
 
+void objcount_writer::writeObjects(const concept& con) const {
+  os << con.getObjects().size();
+}
+
 void entropy_writer::writeAttributes(const concept& con) const {
   os << "h=" << con.attrEntropy(attrcnt);
 }

@@ -234,6 +234,17 @@ public:
     con4.write(dw4);
     TS_ASSERT_EQUALS(os4.str(),"\"o1, o2, o3;0\"");
 
+    //checking object counts
+    std::ostringstream os5;
+    fca::concept_writer_ptr dw5(new fca::objcount_writer(os5));
+    con0.write(dw5);
+    TS_ASSERT_EQUALS(os5.str(),"\"0;a1, a2, a3\"");
+
+    std::ostringstream os6;
+    fca::concept_writer_ptr dw6(new fca::objcount_writer(os6));
+    con2.write(dw6);
+    TS_ASSERT_EQUALS(os6.str(),"\"2;a1, a2\"");
+
   }
 
   void testEntropyDotWriter(void) {
